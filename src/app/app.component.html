@@ -1,0 +1,76 @@
+<div class="main-content">
+  <span class="title-text">{{ title }} app is running!</span>
+  <div class="example-content">
+    <div class="angular-playground-description form-group">
+      <div class="col-xs-12">
+        This page is an example to show the test of the form-validation-monitor component, which using from a library.
+      </div>
+      <div class="sub-topic">
+        <div class="sub-topic">
+          This is a simple data entry form with three fields (User name, Email, Phone number). The Submit button
+          will enable if the form is valid which means, the field contents are matches with validation rules.
+        </div>
+        <div class="sub-topic">
+          <b>The validation rules</b> of fields are the following
+          <ul>
+            <li><b>User name</b> is required, the minimum length is {{ userNameMinLength }}, the maximum
+              length is
+              {{ userNameMaxLength }} and the first character should capital letter</li>
+            <li><b>Email</b> a valid email address required! Used build-in email validator.</li>
+            <li><b>Phone number</b> a valid US. phone number is required! Used regular expression pattern.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="data-entry-form">
+        <label class="text-primary">Simple Template-driven Form Validation example</label>
+        <form (ngSubmit)="onSubmit(dataEntryForm)" #dataEntryForm="ngForm" novalidate autocomplete="off">
+          <div class="form-group">
+            <label class="spacer" for="userName">User name
+              <span class="text-danger">*</span>
+            </label>
+            <input id="userName" class="form-control" name="userName" [(ngModel)]="user.userName" #userName="ngModel"
+              autocomplete="off" required minlength="{{userNameMinLength}}" maxlength="{{userNameMaxLength}}"
+              app-firstCapital>
+            <div *ngIf="(userName && (userName.invalid && userName.dirty)) " class="text-danger">
+              <p *ngIf="userName?.errors?.required">Value is required!</p>
+              <p *ngIf="userName.hasError('minlength')">Min length is {{ userNameMinLength }}!</p>
+              <p *ngIf="userName?.errors?.maxlength">Max length is {{ userNameMaxLength }}!</p>
+              <p *ngIf="userName?.hasError('firstcapital')">The first character should capital letter!</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="spacer" for="email">Email
+              <span class="text-danger">*</span>
+            </label>
+            <input id="email" class="form-control" type="string" name="email" [(ngModel)]="user.email" #email="ngModel"
+              autocomplete="off" required email>
+            <div *ngIf="email && (email.invalid && email.dirty)" class="text-danger">
+              <p *ngIf="email?.errors?.required">Email is required!</p>
+              <p *ngIf="email?.errors?.email">Please type a valid email!</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="spacer" for="phone">Phone number
+              <span class="text-danger">*</span>
+            </label>
+            <input id="phone" class="form-control" name="phone" [(ngModel)]="user.phone" autocomplete="off"
+              #phone="ngModel" required pattern="{{usPhoneNumberPattern}}">
+            <div *ngIf="phone && (phone.invalid && phone.dirty)" class="text-danger">
+              <p *ngIf="phone.errors?.required">Phone is required!</p>
+              <p *ngIf="phone.errors?.pattern">Please type a valid US. phone number without ext!</p>
+            </div>
+          </div>
+          <button class="btn btn-primary spacer" type="button" (click)="setValues()">Set
+            Data</button>
+          <button class="btn btn-primary spacer" type="button" (click)="clearValues()">Clear
+            Data</button>
+          <button class="btn btn-primary" type="submit" [disabled]="dataEntryForm?.invalid">Submit</button>
+        </form>
+        <div>
+          <label>Submitted form data:</label> {{ submittedFormData | json }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <lk-form-validation-monitor-v4 [mainFormGroup]="dataEntryForm"></lk-form-validation-monitor-v4>
+</div>

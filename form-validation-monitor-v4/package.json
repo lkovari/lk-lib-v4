@@ -1,0 +1,14 @@
+{
+  "name": "@lkovari/form-validation-monitor-v4",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/core": ">=4.2.2",
+    "@angular/common": ">=4.2.2"
+  },
+  "ngPackage": {
+    "lib": {
+      "entryFile": "public_api.ts"
+    },
+    "dest": "dist"
+  }
+}
