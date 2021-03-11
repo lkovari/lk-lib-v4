@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormArray, AbstractControl, NgForm } from '@angular/forms';
 
 @Component({
-  selector: 'app-form-validation-monitor-v4',
+  selector: 'lk-form-validation-monitor-v4',
   templateUrl: './form-validation-monitor-v4.component.html',
   styleUrls: ['./form-validation-monitor-v4.component.css']
 })

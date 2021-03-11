@@ -1,6 +1,6 @@
 # Form Validation Monitor V4
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 4.3.5
+This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.10
 
 ## Description of the form-validation-monitor-v4
 
