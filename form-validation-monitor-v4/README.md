@@ -14,12 +14,12 @@ Prerequisities is standard Template-Driven or Reactive (with former name model-d
 
 ## Usage of the  Form Validation Monitor selector: _lk-form-validation-monitor-v4_
 
-_<lk-form-validation-monitor-v4 [mainFormGroup]="dataEntryForm" [distanceFrom]="5"></lk-form-validation-monitor-v4>_
+_<lk-form-validation-monitor-v4 [mainFormGroup]="dataEntryForm" [topGap]="5" [fontSize]="1"></lk-form-validation-monitor-v4>_
 
 Where the 
 
-- dataEntryForm is the reference in the templae of the main form, 
-- distanceFrom is the height of the gap in rem, between the UI of the Form Validation Monitor and other UI elements
+- mainFormGroup is the reference in the templae of the main form, 
+- topGap is the height of the gap in rem, between the UI of the Form Validation Monitor and other UI elements above
 - fontSize is the numeric value the size of font in rem
 
 _<form (ngSubmit)="onSubmit(dataEntryForm)" #dataEntryForm="ngForm" novalidate autocomplete="off">_

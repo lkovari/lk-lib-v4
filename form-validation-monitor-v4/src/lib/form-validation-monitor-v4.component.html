@@ -23,15 +23,7 @@
                     </ng-template>
                     <td *ngFor="let statusKey of formControlStatusKeys">
                         <div *ngIf="statusKey === 'type'; else NoTypeRoot">
-                            <div *ngIf="isItComplexControl(extractFormElementByKey()); else NotComplex">
-                                <button type="button"
-                                    (click)="onComplexControlClicked(extractFormGroupElementByKey())">
-                                    {{ extractType(extractFormElementByKey()) }}
-                                </button>
-                            </div>
-                            <ng-template #NotComplex>
-                                <em>{{ extractType(extractFormElementByKey()) }}</em>
-                            </ng-template>
+                            <em>{{ extractType(mainFormGroup) }}</em>
                         </div>
                         <ng-template #NoTypeRoot>
                             <div *ngIf="isObjectType(extractFormGroupPropertyValueByKey(statusKey)); else NotObjectTypeHead">
