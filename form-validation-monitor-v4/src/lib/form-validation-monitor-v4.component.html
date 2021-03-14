@@ -1,4 +1,4 @@
-<div class="form-validation-monitor-content" [ngStyle]="{'top':(top-gap) + 'rem', 'font-size': (fontSize) + 'rem'}">
+<div class="form-validation-monitor-content" [ngStyle]="{'top-gap':(topGap) + 'rem', 'font-size': (fontSize) + 'rem'}">
     <div style="display: inline;">
         <label>Status of the NgModel Properties of FormControls on a form</label>
         <label style="padding-left: 1rem;">MainForm</label>
@@ -23,21 +23,21 @@
                     </ng-template>
                     <td *ngFor="let statusKey of formControlStatusKeys">
                         <div *ngIf="statusKey === 'type'; else NoTypeRoot">
-                            <div *ngIf="isItComplexControl(extractFormElementByKey(ctrlKey)); else NotComplex">
+                            <div *ngIf="isItComplexControl(extractFormElementByKey()); else NotComplex">
                                 <button type="button"
-                                    (click)="onComplexControlClicked(extractFormGroupElementByKey(ctrlKey))">
-                                    {{ extractType(extractFormElementByKey(ctrlKey)) }}
+                                    (click)="onComplexControlClicked(extractFormGroupElementByKey())">
+                                    {{ extractType(extractFormElementByKey()) }}
                                 </button>
                             </div>
                             <ng-template #NotComplex>
-                                <em>{{ extractType(extractFormElementByKey(ctrlKey)) }}</em>
+                                <em>{{ extractType(extractFormElementByKey()) }}</em>
                             </ng-template>
                         </div>
                         <ng-template #NoTypeRoot>
                             <div *ngIf="isObjectType(extractFormGroupPropertyValueByKey(statusKey)); else NotObjectTypeHead">
                                 <span
                                     [style.color]="getStyleColor(statusKey, extractFormGroupPropertyValueByKey(statusKey))">
-                                    <button type="button" (click)="onClickValue(ctrlKey)">...</button>
+                                    <button type="button" (click)="onClickValue()">...</button>
                                 </span>
                             </div>
                             <ng-template #NotObjectTypeHead>
@@ -70,13 +70,13 @@
                         <ng-template #NoType>
                             <div *ngIf="isObjectType(extractFormGroupPropertyValueByKey(statusKey)); else NotObjectTypeRow">
                                 <span
-                                    [style.color]="getStyleColor(statusKey, extractFormGroupPropertyValueByKey(statusKey))">
+                                    [style.color]="getStyleColor(statusKey, extractFormGroupElementByKey(ctrlKey))">
                                     <button type="button" (click)="onClickValue(ctrlKey)">...</button>
                                 </span>
                             </div>
                             <ng-template #NotObjectTypeRow>
                                 <span
-                                    [style.color]="getStyleColor(statusKey, extractFormGroupPropertyValueByKey(statusKey))">
+                                    [style.color]="getStyleColor(statusKey, extractFormElementByKey(ctrlKey)[statusKey])">
                                     <em> {{ mainFormGroup[statusKey] | json }}</em>
                                 </span>
                             </ng-template>

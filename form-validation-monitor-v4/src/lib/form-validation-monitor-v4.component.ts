@@ -82,20 +82,29 @@ export class FormValidationMonitorV4Component implements OnInit {
     return ctrlKey + ' : ' + v;
   }
 
-  extractFormElementByKey(ctrlKey: string): FormControl | FormGroup | FormArray | NgModelGroup{
+  extractFormElementByKey(ctrlKey?: string): FormControl | FormGroup | FormArray | NgModelGroup {
     // when the ctrlKey is undefined then the mainFormGroup is an NgModelGroup
-    let control = ctrlKey ? this.mainFormGroup.controls[ctrlKey] : this.mainFormGroup.control;
-    if (control instanceof FormControl) {
-      control = <FormControl>control;
-    } else if (control instanceof FormGroup) {
-      control = <FormGroup>control;
-    } else  if (control instanceof FormArray) {
-      control = <FormArray>control;
+    let control;
+    if (ctrlKey) {
+      control = this.mainFormGroup.controls[ctrlKey];
+      if (control instanceof FormControl) {
+        control = <FormControl>control;
+      } else if (control instanceof FormGroup) {
+        control = <FormGroup>control;
+      } else  if (control instanceof FormArray) {
+        control = <FormArray>control;
+      }
+    } else {
+      if (this.mainFormGroup instanceof NgModelGroup) {
+        control = this.mainFormGroup.control;
+      } else {
+        control = this.mainFormGroup;
+      }
     }
     return <FormControl | FormGroup | FormArray | NgModelGroup>control;
   }
 
-  extractFormGroupElementByKey(ctrlKey): FormGroup {
+  extractFormGroupElementByKey(ctrlKey?: string): FormGroup {
     // when the ctrlKey is undefined then the mainFormGroup is an NgModelGroup
     let control = ctrlKey ? this.mainFormGroup.controls[ctrlKey] : this.mainFormGroup.control;
     return control = <FormGroup>control;
@@ -105,7 +114,7 @@ export class FormValidationMonitorV4Component implements OnInit {
     return ctrl[key];
   }
 
-  extractType(control: AbstractControl): string {
+  extractType(control: AbstractControl | NgModelGroup): string {
     let typeName = '';
     if (control instanceof FormControl) {
       typeName = 'FormControl';
@@ -136,7 +145,7 @@ export class FormValidationMonitorV4Component implements OnInit {
     return v instanceof Object;
   }
 
-  onClickValue(ctrlKey: any) {
+  onClickValue(ctrlKey?: any) {
     // if has ctrlKey then get the property value else get the FormGroup value
     const value = ctrlKey ? this.mainFormGroup.controls[ctrlKey].value : this.mainFormGroup.value;
     window.alert(JSON.stringify(value));
@@ -165,7 +174,7 @@ export class FormValidationMonitorV4Component implements OnInit {
    * @param control: AbstractControl
    * @return boolean - if true the passedControl is a complex control, else not
    */
-  isItComplexControl(control: AbstractControl): boolean {
+  isItComplexControl(control: AbstractControl | NgModelGroup): boolean {
     return control instanceof FormGroup || control instanceof FormArray;
   }
 
