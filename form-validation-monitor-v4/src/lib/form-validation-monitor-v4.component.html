@@ -1,17 +1,17 @@
-<div class="display-status-content" [ngStyle]="{'top':(distanceFrom) + 'rem'}">
-    <div class="title-area">
-        <label class="vertical-gap text-primary">Status of the NgModel Properties of FormControls on a form</label>
-        <div class="spacer-horozontal-left vertical-gap" *ngIf="enableBackButton()">
-            <button type="button" class="text-danger" (click)="onBackClicked($event)">Back</button>
-        </div>
+<div class="form-validation-monitor-content" [ngStyle]="{'top':(top-gap) + 'rem', 'font-size': (fontSize) + 'rem'}">
+    <div style="display: inline;">
+        <label>Status of the NgModel Properties of FormControls on a form</label>
+        <label style="padding-left: 1rem;">MainForm</label>
+        <button [hidden]="!enableBackButton()" type="button" style="color: red; margin-left: 0.8rem;" (click)="onBackClicked($event)">Back</button>
     </div>
-    <div class="table-area-style">
-        <table class="table table-bordered table-striped">
+    <div style="overflow-x:auto;">
+        <table id="form-state-table">
             <thead>
                 <tr>
                     <!-- Display ngModel properties -->
                     <th>FORM CONTROL NAME</th>
-                    <th *ngFor="let statusKey of formControlStatusKeys" class="text-dark property-name-uppercase">{{ statusKey }}</th>
+                    <th *ngFor="let statusKey of formControlStatusKeys">{{
+                        statusKey }}</th>
                 </tr>
                 <tr>
                     <!-- Main Form -->
@@ -23,12 +23,29 @@
                     </ng-template>
                     <td *ngFor="let statusKey of formControlStatusKeys">
                         <div *ngIf="statusKey === 'type'; else NoTypeRoot">
-                            <em>{{ extractType(mainFormGroup) }}</em>
+                            <div *ngIf="isItComplexControl(extractFormElementByKey(ctrlKey)); else NotComplex">
+                                <button type="button"
+                                    (click)="onComplexControlClicked(extractFormGroupElementByKey(ctrlKey))">
+                                    {{ extractType(extractFormElementByKey(ctrlKey)) }}
+                                </button>
+                            </div>
+                            <ng-template #NotComplex>
+                                <em>{{ extractType(extractFormElementByKey(ctrlKey)) }}</em>
+                            </ng-template>
                         </div>
                         <ng-template #NoTypeRoot>
-                            <span [style.color]="getStyleColor(statusKey, extractFormGroupPropertyValueByKey(statusKey))">
-                                <em> {{  mainFormGroup[statusKey] | json }}</em>
-                            </span>
+                            <div *ngIf="isObjectType(extractFormGroupPropertyValueByKey(statusKey)); else NotObjectTypeHead">
+                                <span
+                                    [style.color]="getStyleColor(statusKey, extractFormGroupPropertyValueByKey(statusKey))">
+                                    <button type="button" (click)="onClickValue(ctrlKey)">...</button>
+                                </span>
+                            </div>
+                            <ng-template #NotObjectTypeHead>
+                                <span
+                                    [style.color]="getStyleColor(statusKey, extractFormGroupPropertyValueByKey(statusKey))">
+                                    <em> {{ mainFormGroup[statusKey] | json }}</em>
+                                </span>
+                            </ng-template>
                         </ng-template>
                     </td>
                 </tr>
@@ -41,7 +58,8 @@
                     <td *ngFor="let statusKey of formControlStatusKeys">
                         <div *ngIf="statusKey === 'type'; else NoType">
                             <div *ngIf="isItComplexControl(extractFormElementByKey(ctrlKey)); else NotComplex">
-                                <button type="button" (click)="onComplexControlClicked(extractFormGroupElementByKey(ctrlKey))">
+                                <button type="button"
+                                    (click)="onComplexControlClicked(extractFormGroupElementByKey(ctrlKey))">
                                     {{ extractType(extractFormElementByKey(ctrlKey)) }}
                                 </button>
                             </div>
@@ -50,9 +68,18 @@
                             </ng-template>
                         </div>
                         <ng-template #NoType>
-                            <span [style.color]="getStyleColor(statusKey, extractFormElementByKey(ctrlKey)[statusKey])">
-                                <em>{{ extractFormElementByKey(ctrlKey)[statusKey] | json }}</em>
-                            </span>
+                            <div *ngIf="isObjectType(extractFormGroupPropertyValueByKey(statusKey)); else NotObjectTypeRow">
+                                <span
+                                    [style.color]="getStyleColor(statusKey, extractFormGroupPropertyValueByKey(statusKey))">
+                                    <button type="button" (click)="onClickValue(ctrlKey)">...</button>
+                                </span>
+                            </div>
+                            <ng-template #NotObjectTypeRow>
+                                <span
+                                    [style.color]="getStyleColor(statusKey, extractFormGroupPropertyValueByKey(statusKey))">
+                                    <em> {{ mainFormGroup[statusKey] | json }}</em>
+                                </span>
+                            </ng-template>
                         </ng-template>
                     </td>
                 </tr>

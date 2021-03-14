@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormArray, AbstractControl, NgForm } from '@angular/forms';
+import { FormControl, FormGroup, FormArray, AbstractControl, NgForm, NgModelGroup } from '@angular/forms';
+import { Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'lk-form-validation-monitor-v4',
   templateUrl: './form-validation-monitor-v4.component.html',
-  styleUrls: ['./form-validation-monitor-v4.component.css']
+  styleUrls: ['./form-validation-monitor-v4.component.scss']
 })
 export class FormValidationMonitorV4Component implements OnInit {
   private readonly PROPERY_TYPE = 'type';
@@ -20,10 +21,10 @@ export class FormValidationMonitorV4Component implements OnInit {
   formControlStatusKeys = [this.PROPERY_TYPE, this.PROPERY_STATUS, this.PROPERY_VALID, this.PROPERY_INVALID, this.PROPERY_PENDING,
                           this.PROPERY_PRISTINE, this.PROPERY_DIRTY, this.PROPERY_TOUCHED, this.PROPERY_UNTOUCHED, this.PROPERY_VALUE];
 
-  private _mainFormGroup: FormGroup | undefined;
-  private _distanceFrom = '2';
+  private _mainFormGroup: FormGroup;
+  private _topGap = '2';
   controlList = new Array<FormControl>();
-  formGroupStack = new Array<FormGroup | undefined>();
+  formGroupStack = new Array<FormGroup>();
   @Input()
   set mainFormGroup(v: any) {
     if (v instanceof NgForm) {
@@ -36,16 +37,21 @@ export class FormValidationMonitorV4Component implements OnInit {
     return this._mainFormGroup;
   }
   @Input()
-  set distanceFrom(v: string) {
-    this._distanceFrom = v;
+  set topGap(v: string) {
+    this._topGap = v;
   }
-  get distanceFrom(): string {
-    return this._distanceFrom;
+  get topGap(): string {
+    return this._topGap;
   }
+  @Input() fontSize = 1; 
+  /*
+   * DEVELOPER NOTE: almost all function which called from the template probably should replace with pure pipe, to optimize performance.
+   */
+  constructor(private meta: Meta) { }
 
-  constructor() { }
 
   ngOnInit() {
+    this.meta.addTag({ name: 'viewport', content: 'width=device-width, initial-scale=1' });
   }
 
   extractFormGroupPropertyValueByKey(key: string): string {
@@ -53,7 +59,7 @@ export class FormValidationMonitorV4Component implements OnInit {
   }
 
   isComplexControl(ctrl: AbstractControl): boolean {
-    return (ctrl instanceof FormGroup) || (ctrl instanceof FormArray);
+    return (ctrl instanceof FormGroup) || (ctrl instanceof FormArray) || (ctrl instanceof NgModelGroup);
   }
 
   extractFormControls(): Array<FormControl> {
@@ -76,8 +82,9 @@ export class FormValidationMonitorV4Component implements OnInit {
     return ctrlKey + ' : ' + v;
   }
 
-  extractFormElementByKey(ctrlKey: string): FormControl | FormGroup | FormArray | any {
-    let control = this.mainFormGroup.controls[ctrlKey];
+  extractFormElementByKey(ctrlKey: string): FormControl | FormGroup | FormArray | NgModelGroup{
+    // when the ctrlKey is undefined then the mainFormGroup is an NgModelGroup
+    let control = ctrlKey ? this.mainFormGroup.controls[ctrlKey] : this.mainFormGroup.control;
     if (control instanceof FormControl) {
       control = <FormControl>control;
     } else if (control instanceof FormGroup) {
@@ -85,18 +92,19 @@ export class FormValidationMonitorV4Component implements OnInit {
     } else  if (control instanceof FormArray) {
       control = <FormArray>control;
     }
-    return <FormControl | FormGroup | FormArray>control;
+    return <FormControl | FormGroup | FormArray | NgModelGroup>control;
   }
 
-  extractFormGroupElementByKey(ctrlKey: string): FormGroup {
-    let control = this.mainFormGroup.controls[ctrlKey];
+  extractFormGroupElementByKey(ctrlKey): FormGroup {
+    // when the ctrlKey is undefined then the mainFormGroup is an NgModelGroup
+    let control = ctrlKey ? this.mainFormGroup.controls[ctrlKey] : this.mainFormGroup.control;
     return control = <FormGroup>control;
   }
-  /*
+
   extractFormControlValueByKey(ctrl: FormControl, key: string): any {
     return ctrl[key];
   }
-  */
+
   extractType(control: AbstractControl): string {
     let typeName = '';
     if (control instanceof FormControl) {
@@ -122,6 +130,16 @@ export class FormValidationMonitorV4Component implements OnInit {
       color = 'blue';
     }
     return color;
+  }
+
+  isObjectType(v: any): boolean {
+    return v instanceof Object;
+  }
+
+  onClickValue(ctrlKey: any) {
+    // if has ctrlKey then get the property value else get the FormGroup value
+    const value = ctrlKey ? this.mainFormGroup.controls[ctrlKey].value : this.mainFormGroup.value;
+    window.alert(JSON.stringify(value));
   }
 
   extractFormName(control: AbstractControl): string | null {
@@ -164,5 +182,4 @@ export class FormValidationMonitorV4Component implements OnInit {
     this._mainFormGroup = this.formGroupStack.pop()!;
     console.log('onBackClicked click event fired ' + event);
   }
-
 }
