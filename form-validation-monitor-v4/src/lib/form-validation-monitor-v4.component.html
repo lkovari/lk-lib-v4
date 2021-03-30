@@ -1,4 +1,4 @@
-<div class="form-validation-monitor-content" [ngStyle]="{'top-gap':(topGap) + 'rem', 'font-size': (fontSize) + 'rem'}">
+<div class="form-validation-monitor-content" [ngStyle]="{'padding-top':(topGap) + 'rem', 'font-size': (fontSize) + 'rem'}">
     <div style="display: inline;">
         <label>Status of the NgModel Properties of FormControls on a form</label>
         <label style="padding-left: 1rem;">MainForm</label>
@@ -69,7 +69,7 @@
                             <ng-template #NotObjectTypeRow>
                                 <span
                                     [style.color]="getStyleColor(statusKey, extractFormElementByKey(ctrlKey)[statusKey])">
-                                    <em> {{ mainFormGroup[statusKey] | json }}</em>
+                                    <em> {{ extractFormElementByKey(ctrlKey)[statusKey] | json }}</em>
                                 </span>
                             </ng-template>
                         </ng-template>
