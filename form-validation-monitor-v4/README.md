@@ -24,7 +24,7 @@ Where the
 
 _<form (ngSubmit)="onSubmit(dataEntryForm)" #dataEntryForm="ngForm" novalidate autocomplete="off">_
 
-what we captured with ViewChild, eg.
+what we captured with ViewChild, for example see below
 
 _@ViewChild('dataEntryForm') dataEntryForm: NgForm;_
 
@@ -38,4 +38,12 @@ Run `ng build form-validation-monitor-v4` to build the project. The build artifa
 
 After building your library with `ng build form-validation-monitor-v4`, go to the dist folder `cd dist/form-validation-monitor-v4` and run `npm publish`.
 
+## Compatibility
 
+Angular version 4.22 or above.
+
+## Example UI. and the real life usage
+
+![Example UI](https://github.com/lkovari/KLHome/blob/master/src/assets/images/Example-Of-the-lk-form-validation-monitor.png)
+
+[Can check the real life usage of the form-validation-monitor-v4 tool on this URL](https://lkovari.github.io/KLHome/#/angular-page/angular-page-content7)
