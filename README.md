@@ -1,6 +1,10 @@
-# LkLibV4
+# LkLibV4 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.10.
+
+
+In npm registry: https://www.npmjs.com/package/@lkovari/form-validation-monitor-v4
+
 
 ## Development server
 
